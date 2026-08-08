@@ -1,32 +1,183 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>تمدن‌ها — نسخه ۱۳</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>تمدن‌ها — نسخه ۱۵</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f4f7fb;color:#172033}.app{max-width:1600px;margin:auto;padding:16px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}h1{margin:0;font-size:34px}.badge{background:#e9f7ec;color:#287a42;padding:7px 12px;border-radius:999px;font-size:13px}.card{background:#fff;border:1px solid #dbe3ee;border-radius:18px;box-shadow:0 8px 24px rgba(15,23,42,.05)}.toolbar{padding:16px;display:grid;grid-template-columns:1fr auto;gap:14px;margin-bottom:14px}.toolbar h2{margin:0 0 8px}.note{font-size:13px;color:#64748b;line-height:1.8}.buttons{display:flex;gap:8px;flex-wrap:wrap;align-items:center}button{border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;color:#1e3a5f}button.active,button.primary{background:#1f4f82;color:#fff;border-color:#1f4f82}.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px}.mapcard{padding:12px}.maphead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 4px 10px}.maphead h2{margin:0}.status{display:flex;gap:8px;flex-wrap:wrap}.pill{font-size:12px;background:#eef4fb;border:1px solid #d6e2f0;padding:6px 9px;border-radius:999px}.pill.ok{background:#ecfdf3;border-color:#bbf7d0;color:#166534}.pill.warn{background:#fff7ed;border-color:#fed7aa;color:#9a3412}#map{height:690px;border-radius:15px;overflow:hidden;background:#dce8ef}.side{padding:14px;display:flex;flex-direction:column;gap:12px}.side h3{margin:0}.source{border:1px solid #dbe3ee;border-radius:12px;padding:11px}.source b{display:block;margin-bottom:5px}.source small{color:#64748b;line-height:1.6}.place-list{display:grid;gap:7px}.place{border:1px solid #e2e8f0;border-radius:10px;padding:9px;cursor:pointer}.place:hover{background:#f8fafc}.legend{display:grid;gap:7px;font-size:13px}.legend span{display:flex;align-items:center;gap:7px}.swatch{width:24px;height:5px;border-radius:5px;background:#3b82f6}.dot{width:11px;height:11px;border-radius:50%;background:#7c3aed}.audit{margin-top:14px;padding:14px;line-height:1.8}.audit h3{margin-top:0}.audit ul{margin:0;padding-right:20px}.footer{font-size:12px;color:#64748b;margin:12px 4px}.leaflet-popup-content{font-family:Tahoma,Arial,sans-serif;text-align:right}.leaflet-control-layers{direction:rtl;text-align:right}
-@media(max-width:900px){.grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}#map{height:590px}.side{order:2}h1{font-size:28px}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f4f7fb;color:#172033}
+button,input,select{font:inherit}
+.app{max-width:1650px;margin:auto;padding:14px}
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+h1{margin:0;font-size:36px}.sub{font-size:13px;color:#64748b;margin-top:5px}
+.badge{background:#e9f7ec;color:#287a42;padding:8px 13px;border-radius:999px;font-size:13px;white-space:nowrap}
+.card{background:#fff;border:1px solid #dbe3ee;border-radius:18px;box-shadow:0 8px 24px rgba(15,23,42,.05)}
+.controls{padding:14px;margin-bottom:12px}
+.yeargrid{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center}
+.yearbox{background:#eef5ff;border-radius:12px;padding:10px;text-align:center;font-size:20px;font-weight:700}
+input[type=range]{width:100%}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+button,select,.filelabel{border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:9px 11px;color:#1e3a5f;cursor:pointer}
+button.primary,button.active{background:#1f4f82;color:#fff;border-color:#1f4f82}
+.filelabel input{display:none}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:12px}
+.mapcard{padding:12px}.side{padding:14px;display:flex;flex-direction:column;gap:12px}
+.maphead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.maphead h2,.side h3{margin:0}
+.status{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:12px;background:#eef4fb;border:1px solid #d6e2f0;padding:5px 8px;border-radius:999px}
+.pill.ok{background:#ecfdf3;border-color:#bbf7d0;color:#166534}
+.pill.warn{background:#fff7ed;border-color:#fed7aa;color:#9a3412}
+#map{height:660px;border-radius:15px;overflow:hidden;background:#dce8ef}
+.note{font-size:12px;color:#64748b;line-height:1.75}
+.source{border:1px solid #dbe3ee;border-radius:12px;padding:10px}
+.source b{display:block;margin-bottom:5px}
+.source small{color:#64748b;line-height:1.6}
+.active-polities{display:flex;gap:6px;flex-wrap:wrap}
+.polity{font-size:12px;padding:6px 8px;border-radius:999px;background:#eef4fb;border:1px solid #dbe3ee}
+.legend{display:grid;gap:7px;font-size:12px}
+.legend span{display:flex;align-items:center;gap:7px}
+.line{width:24px;height:4px;border-radius:4px;background:#3b82f6}
+.dot{width:11px;height:11px;border-radius:50%;background:#7c3aed}
+.box{width:20px;height:12px;border:2px solid #b7791f;background:#f59e0b33;border-radius:3px}
+.registry{max-height:230px;overflow:auto;border:1px solid #e2e8f0;border-radius:10px}
+.regitem{padding:8px;border-bottom:1px solid #eef2f7;font-size:12px}
+.regitem:last-child{border-bottom:0}
+.regitem b{display:block}.bad{color:#b91c1c}.good{color:#166534}
+.audit{margin-top:12px;padding:14px}
+.audit h3{margin:0 0 8px}.audit ul{margin:0;padding-right:20px;line-height:1.8}
+.footer{font-size:12px;color:#64748b;margin:10px 4px}
+.toast{position:fixed;left:18px;bottom:18px;background:#172033;color:#fff;padding:10px 14px;border-radius:10px;display:none;z-index:9999;max-width:360px;font-size:12px;line-height:1.6}
+.leaflet-popup-content{font-family:Tahoma,Arial,sans-serif;text-align:right}
+.leaflet-control-layers{direction:rtl;text-align:right}
+@media(max-width:950px){.grid{grid-template-columns:1fr}#map{height:560px}.yeargrid{grid-template-columns:1fr}h1{font-size:30px}}
 </style>
-</head><body><div class="app">
-<header><div><h1>تمدن‌ها</h1><div class="note">اطلس تاریخی داده‌محور — آغاز مرحلهٔ اصلی GIS</div></div><span class="badge">نسخهٔ ۱۳</span></header>
-<section class="card toolbar"><div><h2>مرزهای مصنوعی حذف شدند</h2><div class="note">این نسخه فقط لایه‌هایی را نمایش می‌دهد که منبع مشخص دارند: جغرافیای طبیعی Natural Earth و مکان‌های باستانی Pleiades. تا زمانی که مرز یک قلمرو از نقشه یا دادهٔ دانشگاهی دیجیتایز و ثبت منبع نشود، در نقشه به‌عنوان مرز قطعی نمایش داده نمی‌شود.</div></div><div class="buttons"><button id="btnRivers" class="primary">بارگذاری رودها</button><button id="btnPlaces">بارگذاری مکان‌های باستانی</button><button id="btnFit">نمای کامل</button></div></section>
+</head>
+<body>
+<div class="app">
+<header>
+  <div><h1>تمدن‌ها</h1><div class="sub">اطلس تاریخی داده‌محور — نسخهٔ ۱۵: زیرناحیه‌های طبیعی/تاریخی + قلمروهای منبع‌دار + GIS</div></div>
+  <span class="badge">نسخهٔ ۱۵</span>
+</header>
+
+<section class="card controls">
+  <div class="yeargrid">
+    <div id="yearBox" class="yearbox">۵۵۰ ق.م</div>
+    <input id="year" type="range" min="-800" max="700" step="1" value="-550">
+  </div>
+  <div class="row">
+    <button id="prev25">۲۵ سال عقب</button>
+    <button id="play" class="primary">▶ پخش</button>
+    <button id="next25">۲۵ سال جلو</button>
+    <select id="confidenceFilter">
+      <option value="all">همهٔ درجات اطمینان</option>
+      <option value="high">فقط High</option>
+      <option value="medium">High + Medium</option>
+    </select>
+    <label class="filelabel">ورود GeoJSON قلمرو
+      <input id="territoryFile" type="file" accept=".geojson,.json,application/geo+json,application/json">
+    </label>
+    <button id="exportGeo">خروجی GeoJSON</button>
+    <button id="exportKml">خروجی KML</button>
+  </div>
+  <div class="row">
+    <span class="note">قلمروها فقط در سال‌هایی نمایش داده می‌شوند که بازهٔ زمانی Feature شامل سال انتخاب‌شده باشد. فایل فاقد شناسنامهٔ منبع رد می‌شود.</span>
+  </div>
+</section>
+
 <div class="grid">
-<section class="card mapcard"><div class="maphead"><h2>جغرافیای طبیعی و نقاط مستند</h2><div class="status"><span id="riverStatus" class="pill warn">رودها: در انتظار</span><span id="placeStatus" class="pill warn">Pleiades: در انتظار</span></div></div><div id="map"></div></section>
-<aside class="card side"><h3>لایه‌های این نسخه</h3><div class="legend"><span><i class="swatch"></i>رودها و آبراهه‌های Natural Earth</span><span><i class="dot"></i>مکان‌های باستانی از Pleiades</span></div><div class="source"><b>Natural Earth</b><small>دادهٔ عمومی جغرافیایی برای رودها، دریاچه‌ها، سواحل و عوارض پایه. فایل در زمان اجرا از مخزن GeoJSON بارگیری می‌شود.</small></div><div class="source"><b>Pleiades</b><small>هر نشانگر از API رسمی Pleiades به‌صورت GeoJSON دریافت می‌شود. نام، شناسه و لینک منبع در پنجرهٔ هر نقطه نمایش داده می‌شود.</small></div><h3>مکان‌های پایلوت</h3><div id="placeList" class="place-list"></div></aside>
+  <section class="card mapcard">
+    <div class="maphead">
+      <h2>نقشهٔ GIS تاریخی</h2>
+      <div class="status">
+        <span id="riverStatus" class="pill warn">Natural Earth: در انتظار</span>
+        <span id="placeStatus" class="pill warn">Pleiades: در انتظار</span>
+        <span id="territoryStatus" class="pill warn">قلمروها: ۰</span>
+      </div>
+    </div>
+    <div id="map"></div>
+  </section>
+
+  <aside class="card side">
+    <h3>حکومت‌های فعال در سال انتخاب‌شده</h3>
+    <div id="activePolities" class="active-polities"></div>
+    <div class="note">این فهرست برای ناوبری زمانی است؛ وجود نام یک حکومت به معنی وجود Polygon تأییدشده برای آن نیست.</div>
+
+    <h3>لایه‌ها</h3>
+    <div class="legend">
+      <span><i class="line"></i> رودها — Natural Earth</span>
+      <span><i class="dot"></i> نقاط مستند — Pleiades</span>
+      <span><i class="box"></i> قلمرو واردشده با شناسنامهٔ منبع</span>
+    </div>
+
+    <div class="source"><b>Natural Earth</b><small>رودها در زمان اجرا از GeoJSON عمومی Natural Earth بارگیری می‌شوند.</small></div>
+    <div class="source"><b>Pleiades</b><small>مکان‌های پایلوت از API رسمی Pleiades دریافت می‌شوند؛ شناسهٔ منبع در Popup حفظ می‌شود.</small></div>
+
+    <h3>رجیستری قلمروها</h3>
+    <div id="registry" class="registry"><div class="regitem note">هنوز Polygon منبع‌داری وارد نشده است.</div></div>
+
+    <div class="source">
+      <b>Schema اجباری هر Feature</b>
+      <small>
+        polity_id<br>
+        polity_name<br>
+        territory_type = core | stable | exceptional<br>
+        start_year / end_year<br>
+        reference_year<br>
+        source_id<br>
+        source_title<br>
+        confidence = high | medium | low
+      </small>
+    </div>
+  </aside>
 </div>
-<section class="card audit"><h3>قاعدهٔ نسخه‌های بعدی</h3><ul><li>هیچ Polygon تاریخی بدون شناسهٔ منبع، تاریخ مرجع و درجهٔ اطمینان وارد نمی‌شود.</li><li>قلمرو هر حکومت به سه دسته محدود می‌شود: هسته، قلمرو پایدار، و فتح/نفوذ استثنایی.</li><li>رودها، سواحل و ناهمواری‌ها مبنای اصلاح خطوط مرزی خواهند بود؛ نرم‌سازی فقط نمایشی نیست.</li><li>نسخهٔ ۱۳ زیرساخت منبع‌محور است؛ مرزهای واقعی در نسخه‌های بعدی به‌تدریج و همراه با شناسنامهٔ منبع اضافه می‌شوند.</li></ul></section>
-<div class="footer">این فایل سبک است؛ داده‌های GIS هنگام بازشدن سایت از منابع عمومی بارگیری می‌شوند، بنابراین برای نمایش کامل به اینترنت نیاز دارد.</div>
+
+<section class="card audit">
+  <h3>آنچه در v15 اضافه شد</h3>
+  <ul>
+    <li>قلمروهای کلی چهار امپراتوری به زیرناحیه‌های تاریخی-جغرافیایی کوچک‌تر شکسته شدند تا گپ‌های داخلی کمتر و ویرایش آینده دقیق‌تر شود.</li><li>هر زیرناحیه نام مستقل، مبنای جغرافیایی، نوع قلمرو و confidence مستقل دارد.</li><li>اسلایدر زمان و نمایش حکومت‌های فعال.</li>
+    <li>ورود GeoJSON تاریخی با اعتبارسنجی اجباری شناسنامهٔ منبع.</li>
+    <li>سه نوع قلمرو: هسته، پایدار، فتح/نفوذ استثنایی.</li>
+    <li>فیلتر درجهٔ اطمینان و نمایش فقط Featureهای معتبر برای سال انتخاب‌شده.</li>
+    <li>خروجی GeoJSON و KML از قلمروهای تأییدشدهٔ بارگذاری‌شده.</li>
+    <li>Natural Earth و Pleiades از v13 بدون بازگشت به Polygonهای ساختگی حفظ شده‌اند.</li>
+  </ul>
+</section>
+<div class="footer">برای نمایش داده‌های آنلاین، اینترنت لازم است. نمونه‌های داخلی v15 زیرناحیه‌های تحلیلیِ منبع‌دارند؛ خطوط آن‌ها مرز قطعی اداری باستانی محسوب نمی‌شوند و برای دیجیتایز دقیق‌تر قابل جایگزینی‌اند.</div>
 </div>
+<div id="toast" class="toast"></div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+const fmt=y=>y<0?Math.abs(y).toLocaleString('fa-IR')+' ق.م':y.toLocaleString('fa-IR')+' م';
 const map=L.map('map',{preferCanvas:true,worldCopyJump:true}).setView([31.5,46.5],4);
+
 const osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
-const terrain=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}',{maxZoom:13,attribution:'Tiles © Esri'});
+const terrain=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{x}/{y}.png',{maxZoom:13,attribution:'Tiles © Esri'});
 const imagery=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,attribution:'Tiles © Esri'});
-const riversGroup=L.layerGroup().addTo(map), placesGroup=L.layerGroup().addTo(map);
-L.control.layers({'نقشهٔ خیابانی':osm,'زمین‌نما':terrain,'ماهواره‌ای':imagery},{'رودهای مستند':riversGroup,'مکان‌های Pleiades':placesGroup},{position:'topleft',collapsed:false}).addTo(map);
+
+const riversGroup=L.layerGroup().addTo(map);
+const placesGroup=L.layerGroup().addTo(map);
+const territoriesGroup=L.layerGroup().addTo(map);
+
+L.control.layers(
+  {'نقشهٔ خیابانی':osm,'زمین‌نما':terrain,'ماهواره‌ای':imagery},
+  {'رودهای Natural Earth':riversGroup,'مکان‌های Pleiades':placesGroup,'قلمروهای منبع‌دار':territoriesGroup},
+  {position:'topleft',collapsed:false}
+).addTo(map);
 L.control.scale({metric:true,imperial:false}).addTo(map);
+
+const POLITIES=[
+{id:2,name:'ماد',start:-728,end:-550},
+{id:3,name:'هخامنشیان',start:-550,end:-330},
+{id:4,name:'فرمانروایی اسکندر',start:-330,end:-323},
+{id:5,name:'سلوکیان',start:-312,end:-141},
+{id:6,name:'اشکانیان',start:-247,end:224},
+{id:7,name:'ساسانیان',start:224,end:651}
+];
+
 const PLEIADES=[
 {id:'922695',fa:'تخت جمشید',en:'Persepolis'},
 {id:'922693',fa:'پاسارگاد',en:'Pasargadae'},
@@ -36,13 +187,206 @@ const PLEIADES=[
 {id:'893976',fa:'تیسفون',en:'Ctesiphon'},
 {id:'903080',fa:'ماد',en:'Media (region)'}
 ];
-let placeMarkers=[];
-function status(id,text,ok){const el=document.getElementById(id);el.textContent=text;el.className='pill '+(ok?'ok':'warn')}
-function addPlaceList(){const box=document.getElementById('placeList');box.innerHTML='';PLEIADES.forEach(p=>{const d=document.createElement('div');d.className='place';d.innerHTML='<b>'+p.fa+'</b><br><small>'+p.en+' — Pleiades '+p.id+'</small>';d.onclick=()=>{const m=placeMarkers.find(x=>x.pid===p.id);if(m){map.setView(m.getLatLng(),7);m.openPopup()}else loadPlaces()};box.appendChild(d)})}
-addPlaceList();
-async function loadRivers(){status('riverStatus','رودها: در حال بارگذاری',false);document.getElementById('btnRivers').disabled=true;try{const url='https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_rivers_lake_centerlines.geojson';const r=await fetch(url);if(!r.ok)throw new Error(r.status);const gj=await r.json();riversGroup.clearLayers();L.geoJSON(gj,{filter:f=>{const n=(f.properties&&f.properties.name)||'';const c=f.geometry&&f.geometry.coordinates;return true},style:f=>({color:'#3b82f6',weight:1.25,opacity:.78})}).addTo(riversGroup);status('riverStatus','رودها: Natural Earth',true)}catch(e){status('riverStatus','رودها: بارگذاری ناموفق',false);console.error(e)}finally{document.getElementById('btnRivers').disabled=false}}
-function featurePoint(fc){if(!fc)return null;const feats=fc.features||[];for(const f of feats){if(f.geometry&&f.geometry.type==='Point')return [f.geometry.coordinates[1],f.geometry.coordinates[0]];if(f.geometry&&f.geometry.type==='MultiPoint'&&f.geometry.coordinates.length)return [f.geometry.coordinates[0][1],f.geometry.coordinates[0][0]]}return null}
-async function loadPlaces(){status('placeStatus','Pleiades: در حال بارگذاری',false);document.getElementById('btnPlaces').disabled=true;placesGroup.clearLayers();placeMarkers=[];let ok=0;for(const p of PLEIADES){try{const url='https://pleiades.stoa.org/places/'+p.id+'/json';const r=await fetch(url);if(!r.ok)throw new Error(r.status);const fc=await r.json();const ll=featurePoint(fc);if(!ll)continue;const m=L.circleMarker(ll,{radius:p.id==='903080'?9:7,color:'#5b21b6',weight:2,fillColor:'#8b5cf6',fillOpacity:.72}).addTo(placesGroup);m.pid=p.id;m.bindPopup('<b>'+p.fa+'</b><br>'+p.en+'<br><a href="https://pleiades.stoa.org/places/'+p.id+'" target="_blank" rel="noopener">مشاهده منبع Pleiades</a>');placeMarkers.push(m);ok++}catch(e){console.warn('Pleiades',p.id,e)}}status('placeStatus','Pleiades: '+ok+' مکان',ok>0);document.getElementById('btnPlaces').disabled=false}
-document.getElementById('btnRivers').onclick=loadRivers;document.getElementById('btnPlaces').onclick=loadPlaces;document.getElementById('btnFit').onclick=()=>map.setView([31.5,46.5],4);
-setTimeout(()=>map.invalidateSize(),300);loadRivers();loadPlaces();
-</script></body></html>
+
+let currentYear=-550, playing=false, timer=null;
+
+const BUILTIN_TERRITORIES=[{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"مصر","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Nile valley/delta and Sinai edge"},"geometry":{"type":"Polygon","coordinates":[[[28.7,31.5],[30.0,29.0],[31.5,29.2],[32.7,31.0],[31.7,33.0],[29.5,33.0],[28.7,31.5]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"شام و فینیقیه","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Levantine coast, Anti-Lebanon and Syrian steppe transition"},"geometry":{"type":"Polygon","coordinates":[[[32.5,34.0],[36.8,34.2],[37.2,38.0],[34.0,38.5],[31.0,36.0],[32.5,34.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"آسیای صغیر غربی","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Aegean coast and western Anatolian uplands"},"geometry":{"type":"Polygon","coordinates":[[[36.5,26.0],[41.0,26.0],[41.5,31.0],[38.0,32.5],[36.0,30.0],[36.5,26.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"کاپادوکیه و آناتولی مرکزی","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Central Anatolian plateau and Taurus/Pontic transitions"},"geometry":{"type":"Polygon","coordinates":[[[37.0,31.0],[41.5,31.0],[42.0,37.5],[38.0,39.0],[36.5,35.0],[37.0,31.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"ارمنستان و قفقاز جنوبی","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Armenian highlands, upper Euphrates and South Caucasus"},"geometry":{"type":"Polygon","coordinates":[[[38.0,39.0],[43.5,39.5],[44.0,48.5],[40.5,49.5],[37.0,44.5],[38.0,39.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"بین‌النهرین","territory_type":"core","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Tigris-Euphrates alluvium and Assyrian piedmont"},"geometry":{"type":"Polygon","coordinates":[[[29.0,42.0],[36.8,41.0],[37.5,46.0],[33.5,48.5],[29.0,47.0],[29.0,42.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"ماد و آتروپاتن","territory_type":"core","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Zagros highlands and Lake Urmia–Hamadan corridor"},"geometry":{"type":"Polygon","coordinates":[[[33.0,46.0],[38.8,45.0],[39.8,51.5],[35.0,52.5],[32.0,49.0],[33.0,46.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"خوزستان / سوزیانا","territory_type":"core","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Karun-Karkheh lowlands and Zagros foothills"},"geometry":{"type":"Polygon","coordinates":[[[29.0,47.0],[33.5,47.0],[33.5,51.0],[30.0,50.8],[29.0,47.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"پارس","territory_type":"core","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"high","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Fars highlands and Persian Gulf-facing valleys; Persepolis/Pasargadae heartland"},"geometry":{"type":"Polygon","coordinates":[[[26.5,50.0],[31.5,50.0],[31.5,55.5],[28.0,56.0],[26.0,53.0],[26.5,50.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"کرمان و مکران","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Kerman plateau, Makran ranges and Gulf/Oman coast"},"geometry":{"type":"Polygon","coordinates":[[[24.0,55.0],[31.5,55.0],[31.0,62.0],[26.0,63.5],[23.0,59.0],[24.0,55.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"پارت و هیرکانی","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Alborz/Caspian southeast and Kopet Dag–Parthia transition"},"geometry":{"type":"Polygon","coordinates":[[[34.0,52.0],[39.5,52.0],[39.5,61.5],[35.0,62.0],[33.0,57.0],[34.0,52.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"آریا و زرنگ","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Herat basin, Helmand/Sistan drainage and eastern Iranian plateau"},"geometry":{"type":"Polygon","coordinates":[[[28.5,60.0],[36.0,60.0],[36.5,66.5],[31.0,67.0],[28.0,64.0],[28.5,60.0]]]}},{"type":"Feature","properties":{"polity_id":3,"polity_name":"هخامنشیان","subregion_name":"باختر و سغد","territory_type":"stable","start_year":-522,"end_year":-330,"reference_year":-500,"source_id":"WMC-Achaemenid-500","source_title":"Achaemenid Empire at its greatest extent; cited compilation using Brill’s New Pauly Historical Atlas, Atlas of the Ancient Near East, AWMC and Pleiades","source_url":"https://commons.wikimedia.org/wiki/File:The_Achaemenid_Empire_at_its_Greatest_Extent.jpg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Oxus basin, Bactrian plains and Sogdian river oases"},"geometry":{"type":"Polygon","coordinates":[[[34.0,65.0],[40.5,64.0],[42.0,72.0],[37.0,75.0],[33.5,70.0],[34.0,65.0]]]}},{"type":"Feature","properties":{"polity_id":5,"polity_name":"سلوکیان","subregion_name":"سوریهٔ سلوکی","territory_type":"core","start_year":-305,"end_year":-250,"reference_year":-281,"source_id":"Commons-Seleucid-281","source_title":"Seleucid Empire at its greatest extent, 281 BC","source_url":"https://commons.wikimedia.org/wiki/File:Seleucid_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Orontes corridor, Levant and Syrian steppe"},"geometry":{"type":"Polygon","coordinates":[[[31.0,34.0],[37.8,34.0],[38.5,40.0],[34.0,41.0],[31.0,38.0],[31.0,34.0]]]}},{"type":"Feature","properties":{"polity_id":5,"polity_name":"سلوکیان","subregion_name":"بین‌النهرین سلوکی","territory_type":"core","start_year":-305,"end_year":-250,"reference_year":-281,"source_id":"Commons-Seleucid-281","source_title":"Seleucid Empire at its greatest extent, 281 BC","source_url":"https://commons.wikimedia.org/wiki/File:Seleucid_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Tigris-Euphrates plain and northern Mesopotamia"},"geometry":{"type":"Polygon","coordinates":[[[29.5,40.0],[36.5,40.0],[37.0,47.5],[33.0,49.0],[29.0,46.0],[29.5,40.0]]]}},{"type":"Feature","properties":{"polity_id":5,"polity_name":"سلوکیان","subregion_name":"آناتولی سلوکی","territory_type":"stable","start_year":-305,"end_year":-250,"reference_year":-281,"source_id":"Commons-Seleucid-281","source_title":"Seleucid Empire at its greatest extent, 281 BC","source_url":"https://commons.wikimedia.org/wiki/File:Seleucid_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Anatolian plateau and Taurus corridors"},"geometry":{"type":"Polygon","coordinates":[[[35.5,27.0],[41.5,27.0],[42.0,38.0],[38.0,40.0],[35.0,35.0],[35.5,27.0]]]}},{"type":"Feature","properties":{"polity_id":5,"polity_name":"سلوکیان","subregion_name":"ماد سلوکی","territory_type":"stable","start_year":-305,"end_year":-250,"reference_year":-281,"source_id":"Commons-Seleucid-281","source_title":"Seleucid Empire at its greatest extent, 281 BC","source_url":"https://commons.wikimedia.org/wiki/File:Seleucid_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Zagros-Median highlands"},"geometry":{"type":"Polygon","coordinates":[[[32.5,46.0],[39.0,45.0],[39.5,53.0],[34.0,54.0],[31.5,50.0],[32.5,46.0]]]}},{"type":"Feature","properties":{"polity_id":5,"polity_name":"سلوکیان","subregion_name":"پارس و سوزیانا سلوکی","territory_type":"stable","start_year":-305,"end_year":-250,"reference_year":-281,"source_id":"Commons-Seleucid-281","source_title":"Seleucid Empire at its greatest extent, 281 BC","source_url":"https://commons.wikimedia.org/wiki/File:Seleucid_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Susiana lowlands, Fars and southern Iranian plateau"},"geometry":{"type":"Polygon","coordinates":[[[26.0,47.0],[33.0,47.0],[33.0,56.0],[28.0,58.0],[25.0,54.0],[26.0,47.0]]]}},{"type":"Feature","properties":{"polity_id":5,"polity_name":"سلوکیان","subregion_name":"پارت و هیرکانی سلوکی","territory_type":"stable","start_year":-305,"end_year":-250,"reference_year":-281,"source_id":"Commons-Seleucid-281","source_title":"Seleucid Empire at its greatest extent, 281 BC","source_url":"https://commons.wikimedia.org/wiki/File:Seleucid_Empire_(greatest_extent).svg","confidence":"low","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Caspian southeast, Parthia and Kopet Dag transition"},"geometry":{"type":"Polygon","coordinates":[[[33.5,52.0],[39.5,52.0],[40.0,61.0],[35.0,63.0],[32.5,58.0],[33.5,52.0]]]}},{"type":"Feature","properties":{"polity_id":5,"polity_name":"سلوکیان","subregion_name":"شرق سلوکی","territory_type":"stable","start_year":-305,"end_year":-250,"reference_year":-281,"source_id":"Commons-Seleucid-281","source_title":"Seleucid Empire at its greatest extent, 281 BC","source_url":"https://commons.wikimedia.org/wiki/File:Seleucid_Empire_(greatest_extent).svg","confidence":"low","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Aria, Drangiana, Margiana and Bactrian approaches; eastern limit especially uncertain"},"geometry":{"type":"Polygon","coordinates":[[[28.0,60.0],[39.0,60.0],[40.5,69.0],[35.0,71.0],[28.0,67.0],[28.0,60.0]]]}},{"type":"Feature","properties":{"polity_id":6,"polity_name":"اشکانیان","subregion_name":"پارت — هستهٔ اشکانی","territory_type":"core","start_year":-124,"end_year":-91,"reference_year":-100,"source_id":"Commons-Parthian-MithridatesII","source_title":"Parthian Empire at its greatest extent during Mithridates II","source_url":"https://commons.wikimedia.org/wiki/File:Parthian_Empire_(greatest_extent).svg","confidence":"high","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Parthia/Kopet Dag heartland around Nisa and northeast Iran"},"geometry":{"type":"Polygon","coordinates":[[[34.0,55.0],[39.5,55.0],[40.0,62.5],[35.0,64.0],[33.0,59.5],[34.0,55.0]]]}},{"type":"Feature","properties":{"polity_id":6,"polity_name":"اشکانیان","subregion_name":"هیرکانی و قومس","territory_type":"stable","start_year":-124,"end_year":-91,"reference_year":-100,"source_id":"Commons-Parthian-MithridatesII","source_title":"Parthian Empire at its greatest extent during Mithridates II","source_url":"https://commons.wikimedia.org/wiki/File:Parthian_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"South Caspian margin, Alborz east and Qumis corridor"},"geometry":{"type":"Polygon","coordinates":[[[35.0,51.5],[39.0,51.5],[39.0,57.0],[35.0,57.5],[33.8,54.0],[35.0,51.5]]]}},{"type":"Feature","properties":{"polity_id":6,"polity_name":"اشکانیان","subregion_name":"ماد اشکانی","territory_type":"stable","start_year":-124,"end_year":-91,"reference_year":-100,"source_id":"Commons-Parthian-MithridatesII","source_title":"Parthian Empire at its greatest extent during Mithridates II","source_url":"https://commons.wikimedia.org/wiki/File:Parthian_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Zagros and Median plateau"},"geometry":{"type":"Polygon","coordinates":[[[31.5,46.0],[38.5,44.5],[39.0,52.5],[34.0,53.0],[31.0,49.5],[31.5,46.0]]]}},{"type":"Feature","properties":{"polity_id":6,"polity_name":"اشکانیان","subregion_name":"بین‌النهرین اشکانی","territory_type":"stable","start_year":-124,"end_year":-91,"reference_year":-100,"source_id":"Commons-Parthian-MithridatesII","source_title":"Parthian Empire at its greatest extent during Mithridates II","source_url":"https://commons.wikimedia.org/wiki/File:Parthian_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Tigris-Euphrates plain, Ctesiphon/Babylonia and Adiabene"},"geometry":{"type":"Polygon","coordinates":[[[28.5,41.0],[36.5,41.0],[37.0,47.0],[33.0,49.0],[28.0,46.0],[28.5,41.0]]]}},{"type":"Feature","properties":{"polity_id":6,"polity_name":"اشکانیان","subregion_name":"پارس و خوزستان اشکانی","territory_type":"stable","start_year":-124,"end_year":-91,"reference_year":-100,"source_id":"Commons-Parthian-MithridatesII","source_title":"Parthian Empire at its greatest extent during Mithridates II","source_url":"https://commons.wikimedia.org/wiki/File:Parthian_Empire_(greatest_extent).svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Susiana, Persis and southern plateau"},"geometry":{"type":"Polygon","coordinates":[[[25.5,47.0],[33.0,47.0],[33.0,57.0],[28.0,59.0],[25.0,54.0],[25.5,47.0]]]}},{"type":"Feature","properties":{"polity_id":6,"polity_name":"اشکانیان","subregion_name":"شرق اشکانی","territory_type":"stable","start_year":-124,"end_year":-91,"reference_year":-100,"source_id":"Commons-Parthian-MithridatesII","source_title":"Parthian Empire at its greatest extent during Mithridates II","source_url":"https://commons.wikimedia.org/wiki/File:Parthian_Empire_(greatest_extent).svg","confidence":"low","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Margiana/Aria/Sistan transition; degree of direct control varied"},"geometry":{"type":"Polygon","coordinates":[[[28.0,57.0],[36.0,57.0],[38.0,66.0],[32.0,68.0],[27.0,63.0],[28.0,57.0]]]}},{"type":"Feature","properties":{"polity_id":6,"polity_name":"اشکانیان","subregion_name":"ارمنستان — حوزهٔ نفوذ","territory_type":"exceptional","start_year":-95,"end_year":65,"reference_year":-50,"source_id":"Commons-Parthian-MithridatesII","source_title":"Parthian Empire at its greatest extent during Mithridates II","source_url":"https://commons.wikimedia.org/wiki/File:Parthian_Empire_(greatest_extent).svg","confidence":"low","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Armenian highlands; modeled as influence/exceptional rather than uniform direct rule"},"geometry":{"type":"Polygon","coordinates":[[[37.5,42.0],[42.5,41.0],[43.0,48.5],[39.0,50.0],[36.5,46.0],[37.5,42.0]]]}},{"type":"Feature","properties":{"polity_id":7,"polity_name":"ساسانیان","subregion_name":"آسورستان / بین‌النهرین","territory_type":"core","start_year":602,"end_year":628,"reference_year":602,"source_id":"Commons-Sasanian-602-core","source_title":"Sasanian Empire 602 core territory; western gains are separated","source_url":"https://commons.wikimedia.org/wiki/File:ImperioSas%C3%A1nida602-620.svg","confidence":"high","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Tigris-Euphrates lowlands and Ctesiphon heartland"},"geometry":{"type":"Polygon","coordinates":[[[28.5,41.0],[36.5,40.5],[37.5,47.5],[33.0,49.5],[28.0,46.5],[28.5,41.0]]]}},{"type":"Feature","properties":{"polity_id":7,"polity_name":"ساسانیان","subregion_name":"ماد و آذربایجان","territory_type":"core","start_year":602,"end_year":628,"reference_year":602,"source_id":"Commons-Sasanian-602-core","source_title":"Sasanian Empire 602 core territory; western gains are separated","source_url":"https://commons.wikimedia.org/wiki/File:ImperioSas%C3%A1nida602-620.svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Zagros, Iranian Azerbaijan and Median plateau"},"geometry":{"type":"Polygon","coordinates":[[[31.5,46.0],[39.5,44.5],[40.0,53.0],[34.0,54.0],[31.0,50.0],[31.5,46.0]]]}},{"type":"Feature","properties":{"polity_id":7,"polity_name":"ساسانیان","subregion_name":"پارس و خوزستان ساسانی","territory_type":"core","start_year":602,"end_year":628,"reference_year":602,"source_id":"Commons-Sasanian-602-core","source_title":"Sasanian Empire 602 core territory; western gains are separated","source_url":"https://commons.wikimedia.org/wiki/File:ImperioSas%C3%A1nida602-620.svg","confidence":"high","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Fars/Susiana core with Zagros and Gulf-facing lowlands"},"geometry":{"type":"Polygon","coordinates":[[[25.5,47.0],[33.0,47.0],[33.0,57.0],[28.0,59.0],[24.5,54.0],[25.5,47.0]]]}},{"type":"Feature","properties":{"polity_id":7,"polity_name":"ساسانیان","subregion_name":"کرمان و مکران ساسانی","territory_type":"stable","start_year":602,"end_year":628,"reference_year":602,"source_id":"Commons-Sasanian-602-core","source_title":"Sasanian Empire 602 core territory; western gains are separated","source_url":"https://commons.wikimedia.org/wiki/File:ImperioSas%C3%A1nida602-620.svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Kerman plateau and Makran coastal/mountain zone"},"geometry":{"type":"Polygon","coordinates":[[[23.5,55.0],[31.0,55.0],[31.0,63.0],[26.0,64.0],[22.5,59.0],[23.5,55.0]]]}},{"type":"Feature","properties":{"polity_id":7,"polity_name":"ساسانیان","subregion_name":"خراسان ساسانی","territory_type":"stable","start_year":602,"end_year":628,"reference_year":602,"source_id":"Commons-Sasanian-602-core","source_title":"Sasanian Empire 602 core territory; western gains are separated","source_url":"https://commons.wikimedia.org/wiki/File:ImperioSas%C3%A1nida602-620.svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Northeast Iranian plateau, Merv/Herat approaches"},"geometry":{"type":"Polygon","coordinates":[[[31.0,56.0],[39.5,55.0],[40.5,66.0],[34.0,69.0],[29.0,64.0],[31.0,56.0]]]}},{"type":"Feature","properties":{"polity_id":7,"polity_name":"ساسانیان","subregion_name":"ارمنستان و قفقاز ساسانی","territory_type":"stable","start_year":602,"end_year":628,"reference_year":602,"source_id":"Commons-Sasanian-602-core","source_title":"Sasanian Empire 602 core territory; western gains are separated","source_url":"https://commons.wikimedia.org/wiki/File:ImperioSas%C3%A1nida602-620.svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Armenian highlands and South Caucasus frontier"},"geometry":{"type":"Polygon","coordinates":[[[36.5,42.0],[43.0,41.0],[44.0,50.0],[39.0,52.0],[35.5,47.0],[36.5,42.0]]]}},{"type":"Feature","properties":{"polity_id":7,"polity_name":"ساسانیان","subregion_name":"شام — فتح موقت","territory_type":"exceptional","start_year":611,"end_year":628,"reference_year":620,"source_id":"Commons-Sasanian-620-ephemeral","source_title":"Sasanian Empire 602–620 — ephemeral western gains","source_url":"https://commons.wikimedia.org/wiki/File:ImperioSas%C3%A1nida602-620.svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Levantine corridor; temporary occupation during the final Roman–Persian war"},"geometry":{"type":"Polygon","coordinates":[[[30.5,34.0],[37.5,34.0],[38.0,42.0],[34.0,43.0],[30.0,39.0],[30.5,34.0]]]}},{"type":"Feature","properties":{"polity_id":7,"polity_name":"ساسانیان","subregion_name":"مصر — فتح موقت","territory_type":"exceptional","start_year":619,"end_year":628,"reference_year":620,"source_id":"Commons-Sasanian-620-ephemeral","source_title":"Sasanian Empire 602–620 — ephemeral western gains","source_url":"https://commons.wikimedia.org/wiki/File:ImperioSas%C3%A1nida602-620.svg","confidence":"medium","digitization_method":"analytical subregion digitization from the cited empire map; adjusted to coastlines, major river corridors and named historical-geographic regions; not a surveyed ancient boundary","geography_basis":"Nile valley and delta; temporary Sasanian occupation"},"geometry":{"type":"Polygon","coordinates":[[[22.0,29.0],[31.5,28.8],[32.5,32.5],[29.5,34.0],[23.0,33.0],[22.0,29.0]]]}}];
+
+let loadedTerritories=BUILTIN_TERRITORIES.map(f=>JSON.parse(JSON.stringify(f)));
+let placeFeatures=[];
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(t._timer);t._timer=setTimeout(()=>t.style.display='none',4200);
+}
+function status(id,text,ok){
+  const el=document.getElementById(id);
+  el.textContent=text;el.className='pill '+(ok?'ok':'warn');
+}
+function updateYear(y){
+  currentYear=Math.max(-800,Math.min(700,Number(y)));
+  document.getElementById('year').value=currentYear;
+  document.getElementById('yearBox').textContent=fmt(currentYear);
+  renderActivePolities();
+  renderTerritories();
+}
+function renderActivePolities(){
+  const active=POLITIES.filter(p=>p.start<=currentYear&&p.end>=currentYear);
+  const box=document.getElementById('activePolities');
+  box.innerHTML=active.length?active.map(p=>'<span class="polity">'+p.name+'</span>').join(''):'<span class="note">در کاتالوگ پایلوت حکومت فعالی ثبت نشده است.</span>';
+}
+function confidenceAllowed(c){
+  const f=document.getElementById('confidenceFilter').value;
+  c=(c||'').toLowerCase();
+  if(f==='all')return true;
+  if(f==='high')return c==='high';
+  if(f==='medium')return c==='high'||c==='medium';
+  return true;
+}
+function territoryColor(type){
+  return type==='core'?'#1f4f82':type==='stable'?'#b7791f':'#b91c1c';
+}
+function renderTerritories(){
+  territoriesGroup.clearLayers();
+  let visible=0;
+  loadedTerritories.forEach(f=>{
+    const p=f.properties||{};
+    if(!(Number(p.start_year)<=currentYear && Number(p.end_year)>=currentYear))return;
+    if(!confidenceAllowed(p.confidence))return;
+    const c=territoryColor(p.territory_type);
+    const layer=L.geoJSON(f,{
+      style:{color:c,weight:p.territory_type==='core'?2.6:2,fillColor:c,fillOpacity:p.territory_type==='exceptional'?.12:.22,dashArray:p.territory_type==='exceptional'?'7 5':null}
+    }).addTo(territoriesGroup);
+    layer.bindPopup(
+      '<b>'+escapeHtml(p.polity_name)+'</b><br>'+(p.subregion_name?'<b>ناحیه: '+escapeHtml(p.subregion_name)+'</b><br>':'')+
+      'نوع: '+escapeHtml(p.territory_type)+'<br>'+
+      'بازه: '+fmt(Number(p.start_year))+' تا '+fmt(Number(p.end_year))+'<br>'+
+      'سال مرجع: '+fmt(Number(p.reference_year))+'<br>'+
+      'اطمینان: '+escapeHtml(p.confidence)+'<br>'+
+      'منبع: '+escapeHtml(p.source_title)+'<br>'+
+      (p.source_url?'<a href="'+escapeHtml(p.source_url)+'" target="_blank" rel="noopener">مشاهده منبع</a><br>':'')+
+      '<small>'+escapeHtml(p.source_id)+(p.geography_basis?' — مبنای جغرافیایی: '+escapeHtml(p.geography_basis):'')+(p.digitization_method?' — '+escapeHtml(p.digitization_method):'')+'</small>'
+    );
+    if(p.subregion_name) layer.bindTooltip(p.subregion_name,{sticky:true,direction:'top'});
+    visible++;
+  });
+  status('territoryStatus','قلمروها: '+visible.toLocaleString('fa-IR')+' / '+loadedTerritories.length.toLocaleString('fa-IR'),loadedTerritories.length>0);
+  renderRegistry();
+}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function requiredFields(){return ['polity_id','polity_name','territory_type','start_year','end_year','reference_year','source_id','source_title','confidence']}
+function validateFeature(f){
+  if(!f||f.type!=='Feature'||!f.geometry)return ['Feature/geometry نامعتبر'];
+  const p=f.properties||{}, errs=[];
+  requiredFields().forEach(k=>{if(p[k]===undefined||p[k]===null||p[k]==='')errs.push('فیلد '+k+' وجود ندارد')});
+  if(p.territory_type && !['core','stable','exceptional'].includes(String(p.territory_type).toLowerCase())) errs.push('territory_type نامعتبر است');
+  if(p.confidence && !['high','medium','low'].includes(String(p.confidence).toLowerCase())) errs.push('confidence نامعتبر است');
+  ['start_year','end_year','reference_year'].forEach(k=>{if(p[k]!==undefined && !Number.isFinite(Number(p[k])))errs.push(k+' باید عدد باشد')});
+  if(Number(p.start_year)>Number(p.end_year))errs.push('start_year از end_year بزرگ‌تر است');
+  return errs;
+}
+function normalizeFeature(f){
+  const p=f.properties;
+  p.territory_type=String(p.territory_type).toLowerCase();
+  p.confidence=String(p.confidence).toLowerCase();
+  p.start_year=Number(p.start_year);p.end_year=Number(p.end_year);p.reference_year=Number(p.reference_year);
+  return f;
+}
+function renderRegistry(){
+  const box=document.getElementById('registry');
+  if(!loadedTerritories.length){box.innerHTML='<div class="regitem note">هنوز Polygon منبع‌داری وارد نشده است.</div>';return}
+  box.innerHTML=loadedTerritories.map((f,i)=>{
+    const p=f.properties||{};
+    return '<div class="regitem"><b>'+escapeHtml(p.polity_name)+(p.subregion_name?' — '+escapeHtml(p.subregion_name):'')+' — '+escapeHtml(p.territory_type)+'</b>'+
+      '<span class="good">'+escapeHtml(p.confidence)+'</span> · '+fmt(p.start_year)+' تا '+fmt(p.end_year)+
+      '<br><small>'+escapeHtml(p.source_title)+' / '+escapeHtml(p.source_id)+(p.digitization_method?' / '+escapeHtml(p.digitization_method):'')+'</small></div>';
+  }).join('');
+}
+
+async function loadRivers(){
+  status('riverStatus','Natural Earth: در حال بارگذاری',false);
+  try{
+    const url='https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_rivers_lake_centerlines.geojson';
+    const r=await fetch(url); if(!r.ok)throw new Error(r.status);
+    const gj=await r.json(); riversGroup.clearLayers();
+    L.geoJSON(gj,{style:{color:'#3b82f6',weight:1.1,opacity:.72}}).addTo(riversGroup);
+    status('riverStatus','Natural Earth: رودها',true);
+  }catch(e){status('riverStatus','Natural Earth: ناموفق',false);console.error(e)}
+}
+function featurePoint(fc){
+  if(!fc)return null;
+  const feats=fc.features||[];
+  for(const f of feats){
+    if(f.geometry&&f.geometry.type==='Point')return [f.geometry.coordinates[1],f.geometry.coordinates[0]];
+    if(f.geometry&&f.geometry.type==='MultiPoint'&&f.geometry.coordinates.length)return [f.geometry.coordinates[0][1],f.geometry.coordinates[0][0]];
+  }
+  return null;
+}
+async function loadPlaces(){
+  status('placeStatus','Pleiades: در حال بارگذاری',false);
+  placesGroup.clearLayers();placeFeatures=[];let ok=0;
+  for(const p of PLEIADES){
+    try{
+      const url='https://pleiades.stoa.org/places/'+p.id+'/json';
+      const r=await fetch(url);if(!r.ok)throw new Error(r.status);
+      const fc=await r.json();const ll=featurePoint(fc);if(!ll)continue;
+      const m=L.circleMarker(ll,{radius:7,color:'#5b21b6',weight:2,fillColor:'#8b5cf6',fillOpacity:.72}).addTo(placesGroup);
+      m.bindPopup('<b>'+p.fa+'</b><br>'+p.en+'<br>Pleiades '+p.id+'<br><a href="https://pleiades.stoa.org/places/'+p.id+'" target="_blank" rel="noopener">منبع</a>');
+      placeFeatures.push({type:'Feature',geometry:{type:'Point',coordinates:[ll[1],ll[0]]},properties:{name_fa:p.fa,name_en:p.en,source:'Pleiades',source_id:p.id}});
+      ok++;
+    }catch(e){console.warn('Pleiades',p.id,e)}
+  }
+  status('placeStatus','Pleiades: '+ok+' مکان',ok>0);
+}
+
+document.getElementById('territoryFile').addEventListener('change',async ev=>{
+  const file=ev.target.files&&ev.target.files[0]; if(!file)return;
+  try{
+    const data=JSON.parse(await file.text());
+    const feats=data.type==='FeatureCollection'?data.features:(data.type==='Feature'?[data]:[]);
+    if(!feats.length)throw new Error('GeoJSON باید Feature یا FeatureCollection باشد.');
+    const valid=[], problems=[];
+    feats.forEach((f,i)=>{
+      const errs=validateFeature(f);
+      if(errs.length)problems.push('Feature '+(i+1)+': '+errs.join('، '));
+      else valid.push(normalizeFeature(f));
+    });
+    if(problems.length){
+      toast('فایل رد شد. '+problems.slice(0,3).join(' | ')+(problems.length>3?' ...':''));
+      return;
+    }
+    loadedTerritories=[...BUILTIN_TERRITORIES.map(f=>JSON.parse(JSON.stringify(f))),...valid];
+    renderTerritories();
+    if(valid.length){
+      try{map.fitBounds(L.geoJSON({type:'FeatureCollection',features:valid}).getBounds(),{padding:[20,20],maxZoom:5})}catch(e){}
+    }
+    toast(valid.length.toLocaleString('fa-IR')+' Feature معتبر وارد شد.');
+  }catch(e){toast('خطا در GeoJSON: '+e.message)}
+  finally{ev.target.value=''}
+});
+
+function download(name,text,type){
+  const blob=new Blob([text],{type});const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+}
+document.getElementById('exportGeo').onclick=()=>{
+  if(!loadedTerritories.length){toast('قلمرویی برای خروجی وجود ندارد.');return}
+  download('tamaddon-v015-territories.geojson',JSON.stringify({type:'FeatureCollection',features:loadedTerritories},null,2),'application/geo+json');
+};
+function coordsToKml(geom){
+  if(!geom)return '';
+  const ring=r=>r.map(c=>c[0]+','+c[1]+',0').join(' ');
+  if(geom.type==='Polygon')return '<Polygon><outerBoundaryIs><LinearRing><coordinates>'+ring(geom.coordinates[0])+'</coordinates></LinearRing></outerBoundaryIs></Polygon>';
+  if(geom.type==='MultiPolygon')return '<MultiGeometry>'+geom.coordinates.map(p=>'<Polygon><outerBoundaryIs><LinearRing><coordinates>'+ring(p[0])+'</coordinates></LinearRing></outerBoundaryIs></Polygon>').join('')+'</MultiGeometry>';
+  return '';
+}
+document.getElementById('exportKml').onclick=()=>{
+  if(!loadedTerritories.length){toast('قلمرویی برای خروجی وجود ندارد.');return}
+  const placemarks=loadedTerritories.map(f=>{
+    const p=f.properties||{};
+    return '<Placemark><name>'+escapeXml(p.polity_name+' — '+p.territory_type)+'</name><description>'+escapeXml('Source: '+p.source_title+' | '+p.source_id+' | confidence: '+p.confidence)+'</description>'+coordsToKml(f.geometry)+'</Placemark>';
+  }).join('');
+  const kml='<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Tamaddon v15 territories</name>'+placemarks+'</Document></kml>';
+  download('tamaddon-v015-territories.kml',kml,'application/vnd.google-earth.kml+xml');
+};
+function escapeXml(s){return String(s??'').replace(/[<>&'"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c]))}
+
+document.getElementById('year').oninput=e=>updateYear(e.target.value);
+document.getElementById('prev25').onclick=()=>updateYear(currentYear-25);
+document.getElementById('next25').onclick=()=>updateYear(currentYear+25);
+document.getElementById('confidenceFilter').onchange=renderTerritories;
+document.getElementById('play').onclick=()=>{
+  playing=!playing;document.getElementById('play').textContent=playing?'⏸ توقف':'▶ پخش';
+  if(timer){clearInterval(timer);timer=null}
+  if(playing)timer=setInterval(()=>{if(currentYear>=700)updateYear(-800);else updateYear(currentYear+5)},380);
+};
+
+updateYear(-550);
+setTimeout(()=>map.invalidateSize(),250);
+loadRivers();
+loadPlaces();
+</script>
+</body>
+</html>
